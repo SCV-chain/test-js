@@ -1,10 +1,5 @@
 const { ApiPromise, WsProvider, Keyring } = require('@polkadot/api');
-const {
-  mnemonicGenerate,
-  mnemonicToMiniSecret,
-  mnemonicValidate,
-  naclKeypairFromSeed
-} = require('@polkadot/util-crypto');
+const BN = require('bn.js');
 
 const main = async() => {
   const provider = new WsProvider('ws://18.139.30.168:9944');
@@ -27,14 +22,18 @@ const main = async() => {
   console.log(nameToken);
   //console.log(nameToken.toHuman().tokenSymbol[0]);
 
-  const { nonce, data: balance } = await api.query.system.account();
 
+  // Check account balance
+  const alice = '5CaYWkKW8hVBft5uuiQaKsatAnKPsbHBF2oSmQMZ5qAFZ9Et';
+  const { nonce, data: balance } = await api.query.system.account(alice);
+
+  console.log(`balance of ${balance.free} and a nonce of ${nonce}`);
   const decimals = api.registry.chainDecimals;
   const base = new BN(10).pow(new BN(decimals))
-  const mybal = ("${balance.free}")
-  console.log("BN Result *****",mybal)
-  const dm = new BN(mybal).divmod(base);
-  console.log(parseFloat(dm.div.toString() + "." + dm.mod.toString()))
+  //const mybal = ("${balance.free}");
+  console.log(`BN Result *****:${balance.free}`);
+  const dm = new BN(balance.free.toString()).divmod(base);
+  console.log(parseFloat(dm.div.toString() + "." + dm.mod.toString()));
 
 
 

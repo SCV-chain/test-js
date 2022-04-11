@@ -1,8 +1,6 @@
 {
     "dependencies": {
-      "@polkadot/api": "^7.4.1",
-      "bn.js": "^5.2.0"
-
+      "@polkadot/api": "^7.4.1"
     },
     "scripts": {
       "test": "mocha --timeout 15000 --exit"
